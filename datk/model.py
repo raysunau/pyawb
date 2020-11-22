@@ -38,7 +38,6 @@ class ModelTrainer:
                 ,*args, **kwargs) -> None:
         
         self.data_path:str = kwargs.get('data_path')
-        self.df_input = kwargs.get('df_input') 
         self.logfile = kwargs.get('logfile')
         self.command = kwargs.get('cmd')
 

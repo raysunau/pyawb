@@ -1,0 +1,15 @@
+dataset:
+  preprocess:
+    missing_values: mean
+    scale:
+      method: standard
+      target: inputs
+  split:
+    shuffle: true
+    test_size: 0.2
+  type: csv
+model:
+  algorithm: RandomForest
+  type: classification
+target:
+- provide your target(s) here
