@@ -1,13 +1,13 @@
 #%%
 from logging import getLogger
 import os
-
+import json
 import yaml
 import logging
 import pandas as pd
 
 from datk.configs import configs
-from datk.utils import read_yaml,create_yaml,extract_params
+from datk.utils import read_yaml,create_yaml,extract_params,read_json
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -53,8 +53,37 @@ class ModelTrainer:
             raise Exception(f"You must enter a valid command.\n"
                             f"available commands: {self.input_cmds}")
 
+        if self.command == "fit":
+            self.yml_path = kwargs.get('yaml_path')
+            file_ext = self.yml_path.split('.')[-1]
+            logger.info(f"You passed the configurations as a {file_ext} file.")
 
+            self.yaml_configs = read_yaml(self.yml_path) if file_ext == 'yaml' else read_json(self.yml_path)
+            logger.info(f"your chosen configuration: {self.yaml_configs}")
 
+            # dataset options given by the user
+            self.dataset_props: dict = self.yaml_configs.get('dataset', self.default_dataset_props)
+            # model options given by the user
+            self.model_props: dict = self.yaml_configs.get('model', self.default_model_props)
+            # list of target(s) to predict
+            self.target: list = self.yaml_configs.get('target')
+
+            self.model_type: str = self.model_props.get('type')
+            logger.info(f"dataset_props: {self.dataset_props} \n"
+                        f"model_props: {self.model_props} \n "
+                        f"target: {self.target} \n")
+
+        # if entered command is evaluate or predict, then the pre-fitted model needs to be loaded and used
+        else:
+            self.model_path = kwargs.get('model_path', self.default_model_path)
+            logger.info(f"path of the pre-fitted model => {self.model_path}")
+            # load description file to read stored training parameters
+            with open(self.description_file, 'r') as f:
+                dic = json.load(f)
+                self.target: list = dic.get("target")  # target to predict as a list
+                self.model_type: str = dic.get("type")  # type of the model -> regression or classification
+                self.dataset_props: dict = dic.get('dataset_props')  # dataset props entered while fitting
+        getattr(self, self.command)()
 
     def _set_logger(self,
                     log_file:str = 'Pydatoolkt_logger.log',
@@ -76,6 +105,9 @@ class ModelTrainer:
 
     def _load_model(self):
         pass
+
+    def fit(self):
+        print("fit model!!")
     
     @staticmethod
     def create_init_config_file(model_type=None, model_name=None, target=None, *args, **kwargs):
