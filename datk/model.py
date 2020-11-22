@@ -7,7 +7,13 @@ import logging
 import pandas as pd
 
 from datk.configs import configs
+from datk.utils import read_yaml,create_yaml,extract_params
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+            format = '%(asctime)s:%(levelname)s:%(message)s',
+            level = logging.INFO
+        )
 
 # %%
 class ModelTrainer:
@@ -34,13 +40,21 @@ class ModelTrainer:
         self.data_path:str = kwargs.get('data_path')
         self.df_input = kwargs.get('df_input') 
         self.logfile = kwargs.get('logfile')
+        self.command = kwargs.get('cmd')
 
         if self.logfile != None:
             self._set_logger(log_file = self.logfile)
         else:
             self.logger = logging.getLogger(name=__name__)
             self.logger.setLevel(logging.INFO)
+
         self.logger.info(f"Entered kwargs: {kwargs}")
+
+        if not self.command or self.command not in self.input_cmds:
+            raise Exception(f"You must enter a valid command.\n"
+                            f"available commands: {self.input_cmds}")
+
+
 
 
     def _set_logger(self,
@@ -63,6 +77,34 @@ class ModelTrainer:
 
     def _load_model(self):
         pass
+    
+    @staticmethod
+    def create_init_config_file(model_type=None, model_name=None, target=None, *args, **kwargs):
+        path = configs.get('init_file_path', None)
+        if not path:
+            raise Exception("You need to provide a path for the init file")
+
+        dataset_props = ModelTrainer.default_dataset_props
+        model_props = ModelTrainer.default_model_props
+        if model_type:
+            logger.info(f"user selected model type = {model_type}")
+            model_props['type'] = model_type
+        if model_name:
+            logger.info(f"user selected algorithm = {model_name}")
+            model_props['algorithm'] = model_name
+
+        logger.info(f"initalizing a default ModelTrainer.yaml in {path}")
+        default_data = {
+            "dataset": dataset_props,
+            "model": model_props,
+            "target": ['provide your target(s) here'] if not target else [tg for tg in target.split()]
+        }
+        created = create_yaml(default_data, path)
+        if created:
+            logger.info(f"a default igel.yaml is created for you in {path}. "
+                        f"you just need to overwrite the values to meet your expectations")
+        else:
+            logger.warning(f"something went wrong while initializing a default file")
 
 
 

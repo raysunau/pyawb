@@ -39,7 +39,7 @@ configs = {
     },
     "model_props": {
         "type": "classification",
-        "algorithm": "NeuralNetwork"
+        "algorithm": "RandomForest"
     },
 
     "available_dataset_props": {

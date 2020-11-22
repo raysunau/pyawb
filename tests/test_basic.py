@@ -13,7 +13,8 @@ from datk.model import ModelTrainer
 
 def test_init():
     
-    tester = ModelTrainer(df_input="test")
+    tester = ModelTrainer(df_input="test",cmd = "fit")
     assert tester.RAND_SEED == 42
     assert tester.default_dataset_props.get('split').get('test_size') == 0.2
+
 # %%
