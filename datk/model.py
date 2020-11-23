@@ -6,6 +6,9 @@ import yaml
 import logging
 import pandas as pd
 
+from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.multioutput import MultiOutputClassifier, MultiOutputRegressor
+
 
 from datk.configs import configs
 from datk.utils import read_yaml,create_yaml,extract_params,read_json,_reshape
@@ -245,7 +248,7 @@ class ModelTrainer:
             x_train, y_train, x_test, y_test = self._prepare_fit_data()
         self.model, model_args = self._create_model(**kwargs)
         logger.info(f"executing a {self.model.__class__.__name__} algorithm...")
-
+        return x_train
     
     @staticmethod
     def create_init_config_file(model_type=None, model_name=None, target=None, *args, **kwargs):
@@ -270,7 +273,7 @@ class ModelTrainer:
         }
         created = create_yaml(default_data, path)
         if created:
-            logger.info(f"a default igel.yaml is created for you in {path}. "
+            logger.info(f"a default Model.yaml is created for you in {path}. "
                         f"you just need to overwrite the values to meet your expectations")
         else:
             logger.warning(f"something went wrong while initializing a default file")
