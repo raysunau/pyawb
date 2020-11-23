@@ -6,8 +6,10 @@ import yaml
 import logging
 import pandas as pd
 
+
 from datk.configs import configs
-from datk.utils import read_yaml,create_yaml,extract_params,read_json
+from datk.utils import read_yaml,create_yaml,extract_params,read_json,_reshape
+from datk.preprocessing import encode,normalize,handle_missing_values
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -37,9 +39,9 @@ class ModelTrainer:
     def __init__(self
                 ,*args, **kwargs) -> None:
         
-        self.data_path:str = kwargs.get('data_path')
-        self.logfile = kwargs.get('logfile')
-        self.command = kwargs.get('cmd')
+        self.data_path:str = kwargs.get('data_path',None)
+        self.logfile = kwargs.get('logfile',None)
+        self.command = kwargs.get('cmd',None)
 
         if self.logfile != None:
             self._set_logger(log_file = self.logfile)
@@ -54,7 +56,7 @@ class ModelTrainer:
                             f"available commands: {self.input_cmds}")
 
         if self.command == "fit":
-            self.yml_path = kwargs.get('yaml_path')
+            self.yml_path = kwargs.get('yaml_path',None)
             file_ext = self.yml_path.split('.')[-1]
             logger.info(f"You passed the configurations as a {file_ext} file.")
 
@@ -66,9 +68,9 @@ class ModelTrainer:
             # model options given by the user
             self.model_props: dict = self.yaml_configs.get('model', self.default_model_props)
             # list of target(s) to predict
-            self.target: list = self.yaml_configs.get('target')
+            self.target: list = self.yaml_configs.get('target',None)
 
-            self.model_type: str = self.model_props.get('type')
+            self.model_type: str = self.model_props.get('type',None)
             logger.info(f"dataset_props: {self.dataset_props} \n"
                         f"model_props: {self.model_props} \n "
                         f"target: {self.target} \n")
@@ -106,6 +108,19 @@ class ModelTrainer:
 
     def _load_model(self):
         pass
+    
+    def _prepare_clustering_data(self):
+        """
+        preprocess data for the clustering algorithm
+        """
+        return self._process_data(target='fit_cluster')
+
+    def _prepare_predict_data(self):
+        """
+        preprocess predict data to get similar data to the one used when training the model
+        """
+        return self._process_data(target='predict')
+
     
     def _prepare_fit_data(self):
         return self._process_data(target='fit')
@@ -208,18 +223,7 @@ class ModelTrainer:
         except Exception as e:
             logger.exception(f"error occured while preparing the data: {e.args}")
 
-    def _prepare_clustering_data(self):
-        """
-        preprocess data for the clustering algorithm
-        """
-        return self._process_data(target='fit_cluster')
-
-    def _prepare_predict_data(self):
-        """
-        preprocess predict data to get similar data to the one used when training the model
-        """
-        return self._process_data(target='predict')
-
+    
     def fit(self, **kwargs):
         """fit a model
 
