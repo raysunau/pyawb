@@ -4,6 +4,7 @@ import os
 import json
 import yaml
 import logging
+import pickle
 import pandas as pd
 
 from sklearn.model_selection import train_test_split, cross_validate
@@ -13,6 +14,8 @@ from sklearn.multioutput import MultiOutputClassifier, MultiOutputRegressor
 from datk.configs import configs
 from datk.utils import read_yaml,create_yaml,extract_params,read_json,_reshape
 from datk.preprocessing import encode,normalize,handle_missing_values
+from datk.data import models_dict, metrics_dict, evaluate_model
+
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -104,13 +107,88 @@ class ModelTrainer:
 
 
     def _create_model(self, **kwargs):
-        pass
-    
-    def _save_model(self,model):
-        pass
+        """
+        fetch a model depending on the provided type and algorithm by the user and return it
+        @return: class of the chosen model
+        """
+        model_type: str = self.model_props.get('type')
+        model_algorithm: str = self.model_props.get('algorithm')
+        use_cv = self.model_props.get('use_cv_estimator', None)
 
-    def _load_model(self):
-        pass
+        model_args = None
+        if not model_type or not model_algorithm:
+            raise Exception(f"model_type and algorithm cannot be None")
+        algorithms: dict = models_dict.get(model_type)  # extract all algorithms as a dictionary
+        model = algorithms.get(model_algorithm)  # extract model class depending on the algorithm
+        logger.info(f"Solving a {model_type} problem using ===> {model_algorithm}")
+        if not model:
+            raise Exception("Model not found in the algorithms list")
+        else:
+            model_props_args = self.model_props.get('arguments', None)
+            if model_props_args and type(model_props_args) == dict:
+                model_args = model_props_args
+            elif not model_props_args or model_props_args.lower() == "default":
+                model_args = None
+
+            if use_cv:
+                model_class = model.get('cv_class', None)
+                if model_class:
+                    logger.info(
+                                f"cross validation estimator detected. "
+                                f"Switch to the CV version of the {model_algorithm} algorithm")
+                else:
+                    logger.info(
+                        f"No CV class found for the {model_algorithm} algorithm"
+                    )
+            else:
+                model_class = model.get('class')
+            logger.info(f"model arguments: \n"
+                        f"{self.model_props.get('arguments')}")
+            model = model_class(**kwargs) if not model_args else model_class(**model_args)
+            return model, model_args
+
+    
+    def _save_model(self, model):
+        """
+        save the model to a binary file
+        @param model: model to save
+        @return: bool
+        """
+        try:
+            if not os.path.exists(self.results_path):
+                logger.info(f"creating model_results folder to save results...\n"
+                            f"path of the results folder: {self.results_path}")
+                os.mkdir(self.results_path)
+            else:
+                logger.info(f"Folder {self.results_path} already exists")
+                logger.warning(f"data in the {self.results_path} folder will be overridden. If you don't "
+                               f"want this, then move the current {self.results_path} to another path")
+
+        except OSError:
+            logger.exception(f"Creating the directory {self.results_path} failed ")
+        else:
+            logger.info(f"Successfully created the directory in {self.results_path} ")
+            pickle.dump(model, open(self.default_model_path, 'wb'))
+            return True
+
+    def _load_model(self, f: str = ''):
+        """
+        load a saved model from file
+        @param f: path to model
+        @return: loaded model
+        """
+        try:
+            if not f:
+                logger.info(f"result path: {self.results_path} ")
+                logger.info(f"loading model form {self.default_model_path} ")
+                model = pickle.load(open(self.default_model_path, 'rb'))
+            else:
+                logger.info(f"loading from {f}")
+                model = pickle.load(open(f, 'rb'))
+            return model
+        except FileNotFoundError:
+            logger.error(f"File not found in {self.default_model_path} ")
+
     
     def _prepare_clustering_data(self):
         """
@@ -225,6 +303,26 @@ class ModelTrainer:
 
         except Exception as e:
             logger.exception(f"error occured while preparing the data: {e.args}")
+
+    def get_evaluation(self, model, x_test, y_true, y_pred, **kwargs):
+        try:
+            res = evaluate_model(model_type=self.model_type,
+                                 model=model,
+                                 x_test=x_test,
+                                 y_pred=y_pred,
+                                 y_true=y_true,
+                                 get_score_only=False,
+                                 **kwargs)
+        except Exception as e:
+            logger.debug(e)
+            res = evaluate_model(model_type=self.model_type,
+                                 model=model,
+                                 x_test=x_test,
+                                 y_pred=y_pred,
+                                 y_true=y_true,
+                                 get_score_only=True,
+                                 **kwargs)
+        return res
 
     
     def fit(self, **kwargs):

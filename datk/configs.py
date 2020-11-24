@@ -29,6 +29,9 @@ configs = {
             "shuffle": True
         },
         "preprocess": {
+            "encoding": {
+                "type": "oneHotEncoding"
+            },
             "missing_values": "mean",
             "scale": {
                 "method": "standard",

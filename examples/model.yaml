@@ -1,5 +1,8 @@
 dataset:
   preprocess:
+    encoding:
+      type: oneHotEncoding
+      column: Sex
     missing_values: mean
     scale:
       method: standard
