@@ -39,7 +39,7 @@ def encode(df, encoding_type="onehotencoding", column=None):
 
     if encoding_type == "onehotencoding":
         logger.info(f"performing a one hot encoding ...")
-        return pd.get_dummies(df), None
+        return pd.get_dummies(df, dummy_na=True), None
 
     elif encoding_type == "labelencoding":
         if not column:

@@ -304,13 +304,14 @@ class ModelTrainer:
         except Exception as e:
             logger.exception(f"error occured while preparing the data: {e.args}")
 
-    def get_evaluation(self, model, x_test, y_true, y_pred, **kwargs):
+    def get_evaluation(self, model, x_test, y_true, y_pred, y_score, **kwargs):
         try:
             res = evaluate_model(model_type=self.model_type,
                                  model=model,
                                  x_test=x_test,
                                  y_pred=y_pred,
                                  y_true=y_true,
+                                 y_score=y_score,
                                  get_score_only=False,
                                  **kwargs)
         except Exception as e:
@@ -320,6 +321,7 @@ class ModelTrainer:
                                  x_test=x_test,
                                  y_pred=y_pred,
                                  y_true=y_true,
+                                 y_score=y_score,
                                  get_score_only=True,
                                  **kwargs)
         return res
@@ -384,10 +386,12 @@ class ModelTrainer:
                 logger.info(f"split option detected. The performance will be automatically evaluated "
                             f"using the test data portion")
                 y_pred = self.model.predict(x_test)
+                y_score = self.model.predict_proba(x_test)[:,1]
                 eval_results = self.get_evaluation(model=self.model,
                                                    x_test=x_test,
                                                    y_true=y_test,
                                                    y_pred=y_pred,
+                                                   y_score=y_score,
                                                    **kwargs)
 
         fit_description = {

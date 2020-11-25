@@ -51,7 +51,8 @@ from sklearn.metrics import (mean_squared_error,
                              f1_score,
                              r2_score,
                              precision_score,
-                             recall_score)
+                             recall_score,
+                             roc_auc_score)
 from sklearn.utils.multiclass import type_of_target
 import logging
 
@@ -360,12 +361,12 @@ metrics_dict = {
         mean_squared_error, mean_absolute_error, mean_squared_log_error, median_absolute_error, r2_score
     ),
     "classification": (
-        accuracy_score, f1_score, precision_score, recall_score
+        accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
     )
 }
 
 
-def evaluate_model(model, model_type, x_test, y_pred, y_true, get_score_only, **kwargs):
+def evaluate_model(model, model_type, x_test, y_pred, y_true, y_score, get_score_only, **kwargs):
     if get_score_only:
         logger.info(f"calculating {model_type} score...")
         return {f"{model_type} score": model.score(x_test, y_true)}
@@ -391,14 +392,19 @@ def evaluate_model(model, model_type, x_test, y_pred, y_true, get_score_only, **
                                                                                 'f1_score'):
                 if metric.__name__ == 'accuracy_score':
                     eval_res[metric.__name__] = metric(y_pred=y_pred,
-                                                       y_true=y_true)
+                                                       y_true=y_true)                
                 else:
                     eval_res[metric.__name__] = metric(y_pred=y_pred,
                                                        y_true=y_true,
                                                        average='micro')
 
             else:
-                eval_res[metric.__name__] = metric(y_pred=y_pred, y_true=y_true, **kwargs)
+                if metric.__name__ == 'roc_auc_score':
+                    eval_res[metric.__name__] = metric(y_true=y_true,
+                                                      y_score=y_score,
+                                                      average='micro')
+                else:
+                    eval_res[metric.__name__] = metric(y_pred=y_pred, y_true=y_true, **kwargs)
 
     return eval_res
 
