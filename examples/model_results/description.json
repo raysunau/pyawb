@@ -1,6 +1,9 @@
 {
     "model": "RandomForestClassifier",
-    "arguments": "default",
+    "arguments": {
+        "n_estimators": 100,
+        "max_depth": 30
+    },
     "type": "classification",
     "algorithm": "RandomForest",
     "dataset_props": {
@@ -17,15 +20,24 @@
         },
         "split": {
             "shuffle": true,
-            "test_size": 0.2
+            "test_size": 0.2,
+            "stratify": "default"
         },
         "type": "csv"
     },
     "model_props": {
         "algorithm": "RandomForest",
-        "type": "classification"
+        "type": "classification",
+        "cross_validate": {
+            "cv": 3,
+            "verbose": 1
+        },
+        "arguments": {
+            "n_estimators": 100,
+            "max_depth": 30
+        }
     },
-    "data_path": "./train_titanic.csv",
+    "data_path": "./examples/train_titanic.csv",
     "train_data_shape": [
         712,
         12
@@ -42,10 +54,31 @@
         "Survived"
     ],
     "results_on_test_data": {
-        "accuracy_score": 0.8268156424581006,
-        "f1_score": 0.7737226277372263,
-        "precision_score": 0.8153846153846154,
-        "recall_score": 0.7361111111111112,
-        "roc_auc_score": 0.8751947040498442
+        "accuracy_score": 0.8100558659217877,
+        "f1_score": 0.7424242424242424,
+        "precision_score": 0.8166666666666667,
+        "recall_score": 0.6805555555555556,
+        "roc_auc_score": 0.8734423676012462
+    },
+    "cross_validation_params": {
+        "cv": 3,
+        "verbose": 1
+    },
+    "cross_validation_results": {
+        "fit_time": [
+            0.2910728454589844,
+            0.26258420944213867,
+            0.2817881107330322
+        ],
+        "score_time": [
+            0.02939891815185547,
+            0.017998695373535156,
+            0.020174741744995117
+        ],
+        "test_score": [
+            0.8277310924369747,
+            0.7763713080168776,
+            0.7974683544303798
+        ]
     }
 }
