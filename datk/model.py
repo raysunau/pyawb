@@ -2,9 +2,9 @@
 from logging import getLogger
 import os
 import json
-import yaml
 import logging
 import pickle
+import yaml
 import pandas as pd
 
 from sklearn.model_selection import train_test_split, cross_validate
@@ -386,7 +386,7 @@ class ModelTrainer:
                 logger.info(f"split option detected. The performance will be automatically evaluated "
                             f"using the test data portion")
                 y_pred = self.model.predict(x_test)
-                y_score = self.model.predict_proba(x_test)[:,1]
+                y_score = self.model.predict_proba(x_test)[:, 1]
                 eval_results = self.get_evaluation(model=self.model,
                                                    x_test=x_test,
                                                    y_true=y_test,
@@ -434,7 +434,27 @@ class ModelTrainer:
                 json.dump(fit_description, f, ensure_ascii=False, indent=4)
         except Exception as e:
             logger.exception(f"Error while storing the fit description file: {e}")
-    
+    def predict(self):
+        """
+        use a pre-fitted model to make predictions and save them as csv
+        @return: None
+        """
+        try:
+            model = self._load_model(f=self.model_path)
+            x_val = self._prepare_predict_data()  # the same is used for clustering
+            y_pred = model.predict(x_val)
+            y_pred = _reshape(y_pred)
+            logger.info(f"predictions shape: {y_pred.shape} | shape len: {len(y_pred.shape)}")
+            logger.info(f"predict on targets: {self.target}")
+            df_pred = pd.DataFrame.from_dict(
+                {self.target[i]: y_pred[:, i] if len(y_pred.shape) > 1 else y_pred for i in range(len(self.target))})
+
+            logger.info(f"saving the predictions to {self.prediction_file}")
+            df_pred.to_csv(self.prediction_file)
+
+        except Exception as e:
+            logger.exception(f"Error while preparing predictions: {e}")
+
     @staticmethod
     def create_init_config_file(model_type=None, model_name=None, target=None, *args, **kwargs):
         path = configs.get('init_file_path', None)
