@@ -6,9 +6,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.abspath(''))))
 
 from datk.model import ModelTrainer
 
-pred_params = {
-    'cmd':'predict',
+eval_params = {
+    'cmd':'evaluate',
     'data_path': './examples/train_titanic.csv'
 }
 
-ModelTrainer(**pred_params)
+ModelTrainer(**eval_params)

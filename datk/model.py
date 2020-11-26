@@ -434,6 +434,39 @@ class ModelTrainer:
                 json.dump(fit_description, f, ensure_ascii=False, indent=4)
         except Exception as e:
             logger.exception(f"Error while storing the fit description file: {e}")
+    
+    def evaluate(self, **kwargs):
+        """
+        evaluate a pre-fitted model and save results to a evaluation.json
+        @return: None
+        """
+        x_val = None
+        y_true = None
+        eval_results = None
+
+        try:
+            model = self._load_model()
+            if self.model_type != 'clustering':
+                x_val, y_true = self._prepare_eval_data()
+                y_pred = model.predict(x_val)
+                eval_results = self.get_evaluation(model=model,
+                                                   x_test=x_val,
+                                                   y_true=y_true,
+                                                   y_pred=y_pred,
+                                                   **kwargs)
+            else:
+                x_val = self._prepare_clustering_data()
+                y_pred = model.predict(x_val)
+                eval_results = model.score(x_val, y_pred)
+
+            logger.info(f"saving fit description to {self.evaluation_file}")
+            with open(self.evaluation_file, 'w', encoding='utf-8') as f:
+                json.dump(eval_results, f, ensure_ascii=False, indent=4)
+
+        except Exception as e:
+            logger.exception(f"error occured during evaluation: {e}")
+
+
     def predict(self):
         """
         use a pre-fitted model to make predictions and save them as csv
