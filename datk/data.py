@@ -399,9 +399,9 @@ def evaluate_model(model, model_type, x_test, y_pred, y_true, y_score, get_score
                                                        average='micro')
 
             else:
-                if metric.__name__ == 'roc_auc_score':
+                if type_of_target(y_true) =='binary' and metric.__name__ == 'roc_auc_score':
                     eval_res[metric.__name__] = metric(y_true=y_true,
-                                                      y_score=y_score,
+                                                      y_score=y_score[:, 1],
                                                       average='micro')
                 else:
                     eval_res[metric.__name__] = metric(y_pred=y_pred, y_true=y_true, **kwargs)

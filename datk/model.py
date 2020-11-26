@@ -386,7 +386,7 @@ class ModelTrainer:
                 logger.info(f"split option detected. The performance will be automatically evaluated "
                             f"using the test data portion")
                 y_pred = self.model.predict(x_test)
-                y_score = self.model.predict_proba(x_test)[:, 1]
+                y_score = self.model.predict_proba(x_test) if self.model_type == 'classification' else None
                 eval_results = self.get_evaluation(model=self.model,
                                                    x_test=x_test,
                                                    y_true=y_test,
@@ -449,10 +449,12 @@ class ModelTrainer:
             if self.model_type != 'clustering':
                 x_val, y_true = self._prepare_eval_data()
                 y_pred = model.predict(x_val)
+                y_score = model.predict_proba(x_val) if self.model_type == 'classification' else None
                 eval_results = self.get_evaluation(model=model,
                                                    x_test=x_val,
                                                    y_true=y_true,
                                                    y_pred=y_pred,
+                                                   y_score=y_score,
                                                    **kwargs)
             else:
                 x_val = self._prepare_clustering_data()
