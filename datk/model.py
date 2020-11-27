@@ -264,7 +264,7 @@ class ModelTrainer:
             if any(col not in attributes for col in self.target):
                 raise Exception("chosen target(s) to predict must exist in the dataset")
 
-            y = pd.concat([dataset.pop(x) for x in self.target], axis=1)
+            y = pd.concat([dataset.pop(x) for x in self.target], axis=1) # remove target variable(s) from dataset & concat them
             x = _reshape(dataset.to_numpy())
             y = _reshape(y.to_numpy())
             logger.info(f"y shape: {y.shape} and x shape: {x.shape}")
