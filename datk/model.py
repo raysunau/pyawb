@@ -9,7 +9,7 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split, cross_validate
 from sklearn.multioutput import MultiOutputClassifier, MultiOutputRegressor
-
+from sklearn.utils.multiclass import type_of_target
 
 from datk.configs import configs
 from datk.utils import read_yaml,create_yaml,extract_params,read_json,_reshape
@@ -477,8 +477,9 @@ class ModelTrainer:
         try:
             model = self._load_model(f=self.model_path)
             x_val = self._prepare_predict_data()  # the same is used for clustering
-            y_pred = model.predict(x_val)
-            y_pred = _reshape(y_pred)
+            y_pred = model.predict(x_val) 
+            y_pred = _reshape(model.predict_proba(x_val)[:, 1]) if (type_of_target(y_pred) == 'binary' 
+                                        and self.model_type == 'classification') else _reshape(y_pred)
             logger.info(f"predictions shape: {y_pred.shape} | shape len: {len(y_pred.shape)}")
             logger.info(f"predict on targets: {self.target}")
             df_pred = pd.DataFrame.from_dict(
