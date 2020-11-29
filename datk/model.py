@@ -6,6 +6,7 @@ import logging
 import pickle
 import yaml
 import pandas as pd
+import numpy as np
 
 from sklearn.model_selection import train_test_split, cross_validate
 from sklearn.multioutput import MultiOutputClassifier, MultiOutputRegressor
@@ -80,6 +81,16 @@ class ModelTrainer:
             logger.info(f"dataset_props: {self.dataset_props} \n"
                         f"model_props: {self.model_props} \n "
                         f"target: {self.target} \n")
+
+            # handle random numbers generation
+            random_num_options = self.dataset_props.get('random_numbers', None)
+            if random_num_options:
+                generate_reproducible = random_num_options.get('generate_reproducible', None)
+                if generate_reproducible:
+                    logger.info("You provided the generate reproducible results option.")
+                    seed = random_num_options.get('seed', self.RAND_SEED)
+                    np.random.seed(seed)
+                    logger.info(f"Setting a seed = {seed} to generate same random numbers on each experiment..")
 
         # if entered command is evaluate or predict, then the pre-fitted model needs to be loaded and used
         else:
