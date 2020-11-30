@@ -54,6 +54,9 @@ from sklearn.metrics import (mean_squared_error,
                              recall_score,
                              roc_auc_score)
 from sklearn.utils.multiclass import type_of_target
+
+from xgboost import (XGBClassifier,XGBRegressor)
+
 import logging
 
 logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.INFO)
@@ -153,6 +156,10 @@ models_dict = {
             "class": GradientBoostingRegressor,
             "link": "https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html"
                     "#sklearn.ensemble.GradientBoostingRegressor"
+        },
+        "XGBRegressor":{
+            "class": XGBRegressor,
+            "link": "https://xgboost.readthedocs.io/en/latest/python/python_api.html#module-xgboost.sklearn"
         }
     },
 
@@ -278,6 +285,11 @@ models_dict = {
             "class": MultinomialNB,
             "link": "https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html"
                     "#sklearn.naive_bayes.MultinomialNB"
+        },
+
+        "XGBClassifier": {
+            "class": XGBClassifier,
+            "link": "https://xgboost.readthedocs.io/en/latest/python/python_api.html#module-xgboost.sklearn"
         }
 
 
