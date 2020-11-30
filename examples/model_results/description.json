@@ -1,11 +1,10 @@
 {
-    "model": "RandomForestClassifier",
+    "model": "XGBClassifier",
     "arguments": {
-        "n_estimators": 100,
-        "max_depth": 30
+        "n_estimators": 100
     },
     "type": "classification",
-    "algorithm": "RandomForest",
+    "algorithm": "XGBClassifier",
     "dataset_props": {
         "preprocess": {
             "encoding": {
@@ -26,15 +25,14 @@
         "type": "csv"
     },
     "model_props": {
-        "algorithm": "RandomForest",
+        "algorithm": "XGBClassifier",
         "type": "classification",
         "cross_validate": {
             "cv": 3,
             "verbose": 1
         },
         "arguments": {
-            "n_estimators": 100,
-            "max_depth": 30
+            "n_estimators": 100
         }
     },
     "data_path": "./examples/train_titanic.csv",
@@ -54,11 +52,11 @@
         "Survived"
     ],
     "results_on_test_data": {
-        "accuracy_score": 0.8491620111731844,
-        "f1_score": 0.7874015748031497,
-        "precision_score": 0.8333333333333334,
-        "recall_score": 0.746268656716418,
-        "roc_auc_score": 0.8832622601279319
+        "accuracy_score": 0.8212290502793296,
+        "f1_score": 0.7866666666666666,
+        "precision_score": 0.7866666666666666,
+        "recall_score": 0.7866666666666666,
+        "roc_auc_score": 0.8662820512820513
     },
     "cross_validation_params": {
         "cv": 3,
@@ -66,19 +64,19 @@
     },
     "cross_validation_results": {
         "fit_time": [
-            0.31264805793762207,
-            0.27547764778137207,
-            0.2740139961242676
+            0.1409001350402832,
+            0.02987504005432129,
+            0.038687944412231445
         ],
         "score_time": [
-            0.02316904067993164,
-            0.018770217895507812,
-            0.020006895065307617
+            0.0021448135375976562,
+            0.001589059829711914,
+            0.0016930103302001953
         ],
         "test_score": [
-            0.8067226890756303,
-            0.8227848101265823,
-            0.7974683544303798
+            0.8025210084033614,
+            0.7890295358649789,
+            0.7805907172995781
         ]
     }
 }
