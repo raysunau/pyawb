@@ -49,7 +49,16 @@ class ModelTrainer:
         self.data_path:str = kwargs.get('data_path',None)
         self.logfile = kwargs.get('logfile',None)
         self.command = kwargs.get('cmd',None)
-
+        self.results_path = kwargs.get('results_path',None) # path to the results folder
+        # results_path as specified input
+        if self.results_path==None:
+            self.results_path = ModelTrainer.results_path  # path to the results folder
+        else:
+            self.default_model_path = os.path.join(self.results_path, configs.get('model_file'))
+            self.description_file = os.path.join(self.results_path, 'description.json')  # path to the description.json file
+            self.evaluation_file = os.path.join(self.results_path, 'evaluation.json')  # path to the evaluation.json file
+            self.prediction_file = os.path.join(self.results_path, 'prediction.json')  # path to the predictions.csv
+            
         if self.logfile != None:
             self._set_logger(log_file = self.logfile)
         else:

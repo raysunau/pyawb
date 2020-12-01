@@ -55,7 +55,7 @@ from sklearn.metrics import (mean_squared_error,
                              roc_auc_score)
 from sklearn.utils.multiclass import type_of_target
 
-from xgboost import (XGBClassifier,XGBRegressor)
+from xgboost import XGBClassifier, XGBRegressor
 
 import logging
 

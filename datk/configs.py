@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 
 
-stats_dir = 'examples/model_results' # 'model_results' changed for testing
+stats_dir = 'model_results' # 'model_results' changed for testing
 model_file = 'model.sav'
 init_file = 'model.yaml'
 res_path = Path(os.getcwd()) / stats_dir
