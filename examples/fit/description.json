@@ -1,0 +1,82 @@
+{
+    "model": "XGBClassifier",
+    "arguments": {
+        "n_estimators": 100
+    },
+    "type": "classification",
+    "algorithm": "XGBClassifier",
+    "dataset_props": {
+        "preprocess": {
+            "encoding": {
+                "type": "oneHotEncoding",
+                "column": "Sex"
+            },
+            "missing_values": "mean",
+            "scale": {
+                "method": "standard",
+                "target": "inputs"
+            }
+        },
+        "split": {
+            "shuffle": true,
+            "test_size": 0.2,
+            "stratify": "default"
+        },
+        "type": "csv"
+    },
+    "model_props": {
+        "algorithm": "XGBClassifier",
+        "type": "classification",
+        "cross_validate": {
+            "cv": 3,
+            "verbose": 1
+        },
+        "arguments": {
+            "n_estimators": 100
+        }
+    },
+    "data_path": "./examples/train_titanic.csv",
+    "train_data_shape": [
+        712,
+        12
+    ],
+    "test_data_shape": [
+        179,
+        12
+    ],
+    "train_data_size": 712,
+    "test_data_size": 179,
+    "results_path": "./examples/fit/",
+    "model_path": "./examples/fit/model.sav",
+    "target": [
+        "Survived"
+    ],
+    "results_on_test_data": {
+        "accuracy_score": 0.7877094972067039,
+        "f1_score": 0.7205882352941176,
+        "precision_score": 0.7,
+        "recall_score": 0.7424242424242424,
+        "roc_auc_score": 0.8744301421292572
+    },
+    "cross_validation_params": {
+        "cv": 3,
+        "verbose": 1
+    },
+    "cross_validation_results": {
+        "fit_time": [
+            0.12144994735717773,
+            0.028640031814575195,
+            0.028499841690063477
+        ],
+        "score_time": [
+            0.0020449161529541016,
+            0.0014710426330566406,
+            0.0015151500701904297
+        ],
+        "test_score": [
+            0.7773109243697479,
+            0.8059071729957806,
+            0.7637130801687764
+        ]
+    }
+}
