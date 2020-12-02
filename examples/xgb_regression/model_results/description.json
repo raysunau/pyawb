@@ -46,17 +46,17 @@
     ],
     "train_data_size": 16512,
     "test_data_size": 4128,
-    "results_path": "/Users/rsun/projects/code/pydatoolkit/examples/model_results",
-    "model_path": "/Users/rsun/projects/code/pydatoolkit/examples/model_results/model.sav",
+    "results_path": "./xgb_regression/model_results",
+    "model_path": "./xgb_regression/model_results/model.sav",
     "target": [
         "median_house_value"
     ],
     "results_on_test_data": {
-        "mean_squared_error": 2125702261.1611018,
-        "mean_absolute_error": 30793.540100097656,
-        "mean_squared_log_error": 0.05278939771626279,
-        "median_absolute_error": 20382.8125,
-        "r2_score": 0.8402361278416385
+        "mean_squared_error": 2406501869.64035,
+        "mean_absolute_error": 31860.324823187304,
+        "mean_squared_log_error": 0.05872863095010615,
+        "median_absolute_error": 20310.6484375,
+        "r2_score": 0.8158271854533206
     },
     "cross_validation_params": {
         "cv": 3,
@@ -64,19 +64,19 @@
     },
     "cross_validation_results": {
         "fit_time": [
-            0.46980905532836914,
-            0.4018590450286865,
-            0.5789849758148193
+            0.46373796463012695,
+            0.4118049144744873,
+            0.5196399688720703
         ],
         "score_time": [
-            0.005377054214477539,
-            0.006207942962646484,
-            0.010504961013793945
+            0.0053861141204833984,
+            0.005414724349975586,
+            0.010213851928710938
         ],
         "test_score": [
-            0.8134300930753338,
-            0.8296856720174972,
-            0.8067238922762858
+            0.8169548020429263,
+            0.8264569806659859,
+            0.8305631563391359
         ]
     }
 }

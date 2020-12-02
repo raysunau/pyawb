@@ -13,13 +13,12 @@ dataset:
     stratify: default # If not None, data is split in a stratified fashion, using this as the class labels.
   type: csv
 model:
-  algorithm: RandomForest
+  algorithm: XGBRegressor
   type: regression
   cross_validate:
       cv: 3
       verbose: 1
   arguments:
         n_estimators: 100
-        max_depth: 30
 target:
 - median_house_value

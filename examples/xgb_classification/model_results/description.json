@@ -1,0 +1,82 @@
+{
+    "model": "XGBClassifier",
+    "arguments": {
+        "n_estimators": 100
+    },
+    "type": "classification",
+    "algorithm": "XGBClassifier",
+    "dataset_props": {
+        "preprocess": {
+            "encoding": {
+                "type": "oneHotEncoding",
+                "column": "Sex"
+            },
+            "missing_values": "mean",
+            "scale": {
+                "method": "standard",
+                "target": "inputs"
+            }
+        },
+        "split": {
+            "shuffle": true,
+            "test_size": 0.2,
+            "stratify": "default"
+        },
+        "type": "csv"
+    },
+    "model_props": {
+        "algorithm": "XGBClassifier",
+        "type": "classification",
+        "cross_validate": {
+            "cv": 3,
+            "verbose": 1
+        },
+        "arguments": {
+            "n_estimators": 100
+        }
+    },
+    "data_path": "./train_titanic.csv",
+    "train_data_shape": [
+        712,
+        12
+    ],
+    "test_data_shape": [
+        179,
+        12
+    ],
+    "train_data_size": 712,
+    "test_data_size": 179,
+    "results_path": "./xgb_classification/model_results",
+    "model_path": "./xgb_classification/model_results/model.sav",
+    "target": [
+        "Survived"
+    ],
+    "results_on_test_data": {
+        "accuracy_score": 0.7877094972067039,
+        "f1_score": 0.7532467532467534,
+        "precision_score": 0.7435897435897436,
+        "recall_score": 0.7631578947368421,
+        "roc_auc_score": 0.8330991313234541
+    },
+    "cross_validation_params": {
+        "cv": 3,
+        "verbose": 1
+    },
+    "cross_validation_results": {
+        "fit_time": [
+            0.12513208389282227,
+            0.04893684387207031,
+            0.054927825927734375
+        ],
+        "score_time": [
+            0.0016429424285888672,
+            0.0014681816101074219,
+            0.0016131401062011719
+        ],
+        "test_score": [
+            0.7983193277310925,
+            0.810126582278481,
+            0.8396624472573839
+        ]
+    }
+}
