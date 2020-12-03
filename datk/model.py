@@ -538,6 +538,3 @@ class ModelTrainer:
                         f"you just need to overwrite the values to meet your expectations")
         else:
             logger.warning(f"something went wrong while initializing a default file")
-
-
-
