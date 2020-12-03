@@ -17,7 +17,7 @@ from datk.model import ModelTrainer
 fit_params = {
     'cmd':'fit',
     'data_path': './examples/train_titanic.csv',
-    'yaml_path': './examples/xgb_model.yaml',
+    'yaml_path': './examples/xgb_model_classification.yaml',
     'results_path': './examples/fit/'
 }
 
