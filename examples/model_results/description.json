@@ -1,15 +1,16 @@
 {
-    "model": "XGBRegressor",
+    "model": "RandomForestClassifier",
     "arguments": {
-        "n_estimators": 100
+        "n_estimators": 100,
+        "max_depth": 30
     },
-    "type": "regression",
-    "algorithm": "XGBRegressor",
+    "type": "classification",
+    "algorithm": "RandomForest",
     "dataset_props": {
         "preprocess": {
             "encoding": {
                 "type": "oneHotEncoding",
-                "column": "ocean_proximity"
+                "column": "Sex"
             },
             "missing_values": "mean",
             "scale": {
@@ -25,58 +26,82 @@
         "type": "csv"
     },
     "model_props": {
-        "algorithm": "XGBRegressor",
-        "type": "regression",
+        "algorithm": "RandomForest",
+        "type": "classification",
         "cross_validate": {
-            "cv": 3,
+            "cv": 10,
+            "scoring": "roc_auc",
             "verbose": 1
         },
         "arguments": {
-            "n_estimators": 100
+            "n_estimators": 100,
+            "max_depth": 30
         }
     },
-    "data_path": "./housing.csv",
+    "data_path": "./train_titanic.csv",
     "train_data_shape": [
-        16512,
-        14
+        712,
+        12
     ],
     "test_data_shape": [
-        4128,
-        14
+        179,
+        12
     ],
-    "train_data_size": 16512,
-    "test_data_size": 4128,
+    "train_data_size": 712,
+    "test_data_size": 179,
     "results_path": "/Users/rsun/projects/code/pydatoolkit/examples/model_results",
     "model_path": "/Users/rsun/projects/code/pydatoolkit/examples/model_results/model.sav",
     "target": [
-        "median_house_value"
+        "Survived"
     ],
     "results_on_test_data": {
-        "mean_squared_error": 2125702261.1611018,
-        "mean_absolute_error": 30793.540100097656,
-        "mean_squared_log_error": 0.05278939771626279,
-        "median_absolute_error": 20382.8125,
-        "r2_score": 0.8402361278416385
+        "accuracy_score": 0.8212290502793296,
+        "f1_score": 0.7714285714285715,
+        "precision_score": 0.8059701492537313,
+        "recall_score": 0.7397260273972602,
+        "roc_auc_score": 0.8649521840268803
     },
     "cross_validation_params": {
-        "cv": 3,
+        "cv": 10,
+        "scoring": "roc_auc",
         "verbose": 1
     },
     "cross_validation_results": {
         "fit_time": [
-            0.46980905532836914,
-            0.4018590450286865,
-            0.5789849758148193
+            0.20235633850097656,
+            0.14222002029418945,
+            0.13754916191101074,
+            0.14969086647033691,
+            0.13520097732543945,
+            0.1347501277923584,
+            0.13399124145507812,
+            0.13501596450805664,
+            0.13454294204711914,
+            0.13632488250732422
         ],
         "score_time": [
-            0.005377054214477539,
-            0.006207942962646484,
-            0.010504961013793945
+            0.011216878890991211,
+            0.01121211051940918,
+            0.010293006896972656,
+            0.01039886474609375,
+            0.008440732955932617,
+            0.009725809097290039,
+            0.009514808654785156,
+            0.008944272994995117,
+            0.010064125061035156,
+            0.010841131210327148
         ],
         "test_score": [
-            0.8134300930753338,
-            0.8296856720174972,
-            0.8067238922762858
+            0.8308641975308643,
+            0.882716049382716,
+            0.8661616161616162,
+            0.9532828282828283,
+            0.8026094276094276,
+            0.7781986531986532,
+            0.7975589225589226,
+            0.9006734006734007,
+            0.8438552188552187,
+            0.8307692307692308
         ]
     }
 }

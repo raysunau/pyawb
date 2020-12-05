@@ -16,7 +16,8 @@ model:
   algorithm: RandomForest
   type: classification
   cross_validate:
-      cv: 3
+      cv: 10
+      scoring: roc_auc
       verbose: 1
   arguments:
         n_estimators: 100
