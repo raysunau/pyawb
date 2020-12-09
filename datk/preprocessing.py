@@ -69,3 +69,9 @@ def normalize(x, y=None, method='standard'):
         return scaler.fit_transform(X=x)
     else:
         return scaler.fit_transform(X=x, y=y)
+
+def preprocess_pipeline():
+    """[create a data preprocess pipeline using sklearn pipeline]
+    Todo
+    """
+    pass
