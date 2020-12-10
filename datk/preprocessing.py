@@ -70,7 +70,7 @@ def normalize(x, y=None, method='standard'):
     else:
         return scaler.fit_transform(X=x, y=y)
 
-def preprocess_pipeline():
+def make_column_transformer():
     """[create a data preprocess pipeline using sklearn pipeline]
     Todo
     """
