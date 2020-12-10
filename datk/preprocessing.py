@@ -74,4 +74,38 @@ def preprocess_pipeline():
     """[create a data preprocess pipeline using sklearn pipeline]
     Todo
     """
-    pass
+    from sklearn.pipeline import make_pipeline,Pipeline,FeatureUnion
+    from sklearn.impute import SimpleImputer, MissingIndicator
+    from sklearn.preprocessing import StandardScaler, OneHotEncoder, FunctionTransformer
+    from sklearn.compose import ColumnTransformer,make_column_selector
+
+
+    num_imputer = Pipeline([
+            ("imputer", SimpleImputer(strategy="median",add_indicator=False))
+        ])
+    cat_ohe = Pipeline([
+        ("cat_imputer", SimpleImputer(strategy='constant',fill_value='NA')),
+        ('ohe',OneHotEncoder(dtype=np.int,handle_unknown='ignore'))
+        ])
+    return ColumnTransformer(
+        [('imp', num_imputer, make_column_selector(dtype_include=np.number)),
+        ('ohe', cat_ohe, make_column_selector(dtype_include=['object','category']))
+        ], remainder='passthrough'
+        )
+   
+
+def get_preprocessed_df(df,transformer,fit_flag=False):
+    
+    if fit_flag:
+        df_ = transformer.fit_transform(df)
+    else:
+        df_ = transformer.transform(df)
+    
+    num_cols = transformer.transformers_[0][2]
+
+    cat_cols_encoded = transformer.transformers_[1][1].steps[1][1].get_feature_names(
+        transformer.transformers_[1][2])
+        
+    return pd.DataFrame(df_,
+        columns=num_cols + list(cat_cols_encoded),
+        index=df.index)
