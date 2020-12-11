@@ -1,6 +1,10 @@
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+from sklearn.pipeline import make_pipeline,Pipeline,FeatureUnion
+from sklearn.compose import ColumnTransformer,make_column_selector
+
 import numpy as np
 import pandas as pd
 import logging
@@ -70,18 +74,12 @@ def normalize(x, y=None, method='standard'):
     else:
         return scaler.fit_transform(X=x, y=y)
 
-def make_column_transformer():
+def make_column_transformer(num_missing_impute_strategy='mean'):
     """[create a data preprocess pipeline using sklearn pipeline]
     Todo
     """
-    from sklearn.pipeline import make_pipeline,Pipeline,FeatureUnion
-    from sklearn.impute import SimpleImputer, MissingIndicator
-    from sklearn.preprocessing import StandardScaler, OneHotEncoder, FunctionTransformer
-    from sklearn.compose import ColumnTransformer,make_column_selector
-
-
     num_imputer = Pipeline([
-            ("imputer", SimpleImputer(strategy="median",add_indicator=False))
+            ("imputer", SimpleImputer(strategy=num_missing_impute_strategy,add_indicator=False))
         ])
     cat_ohe = Pipeline([
         ("cat_imputer", SimpleImputer(strategy='constant',fill_value='NA')),
