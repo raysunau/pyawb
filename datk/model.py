@@ -58,14 +58,8 @@ class ModelTrainer:
             self.description_file = os.path.join(self.results_path, 'description.json')  # path to the description.json file
             self.evaluation_file = os.path.join(self.results_path, 'evaluation.json')  # path to the evaluation.json file
             self.prediction_file = os.path.join(self.results_path, 'prediction.json')  # path to the predictions.csv
-            
-        if self.logfile != None:
-            self._set_logger(log_file = self.logfile)
-        else:
-            self.logger = logging.getLogger(name=__name__)
-            self.logger.setLevel(logging.INFO)
-
-        self.logger.info(f"Entered kwargs: {kwargs}")
+        
+        logger.info(f"Entered kwargs: {kwargs}")
 
         if not self.command or self.command not in self.input_cmds:
             raise Exception(f"You must enter a valid command.\n"
@@ -112,19 +106,6 @@ class ModelTrainer:
                 self.model_type: str = dic.get("type")  # type of the model -> regression or classification
                 self.dataset_props: dict = dic.get('dataset_props')  # dataset props entered while fitting
         getattr(self, self.command)()
-
-    def _set_logger(self,
-                    log_file:str = 'Pydatoolkt_logger.log',
-                    log_level = logging.INFO):
-                    
-        logging.basicConfig(
-            format = '%(asctime)s:%(levelname)s:%(message)s',
-            filename=log_file,
-            filemode='w',
-            level = log_level
-        )
-        logging.info('Start logging to ' + log_file + ' ' + str(self.model))
-
 
     def _create_model(self, **kwargs):
         """

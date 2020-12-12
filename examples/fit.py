@@ -18,7 +18,8 @@ fit_params = {
     'cmd':'fit',
     'data_path': './examples/train_titanic.csv',
     'yaml_path': './examples/xgb_model_classification.yaml',
-    'results_path': './examples/fit/'
+    'results_path': './examples/fit/',
+    'logfile': './examples/fit/logfile.log'
 }
 
 ModelTrainer(**fit_params)
