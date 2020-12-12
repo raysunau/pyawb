@@ -22,3 +22,5 @@ model:
         n_estimators: 100
 target:
 - Survived
+observation_id:
+- PassengerId

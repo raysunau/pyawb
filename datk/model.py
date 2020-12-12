@@ -79,6 +79,9 @@ class ModelTrainer:
             self.model_props: dict = self.yaml_configs.get('model', self.default_model_props)
             # list of target(s) to predict
             self.target: list = self.yaml_configs.get('target',None)
+            # list of obs_id(s) to identify observation
+            self.observation_id: list = self.yaml_configs.get('observation_id',None)
+
 
             self.model_type: str = self.model_props.get('type',None)
             logger.info(f"dataset_props: {self.dataset_props} \n"
