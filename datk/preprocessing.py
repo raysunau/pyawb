@@ -74,6 +74,25 @@ def normalize(x, y=None, method='standard'):
     else:
         return scaler.fit_transform(X=x, y=y)
 
+# sunr's function
+def make_df_empty(columns, dtypes, index=None):
+    """[create an empty dataframe with columns and dtypes]
+
+    Args:
+        columns ([type]): [description]
+        dtypes ([type]): [description]
+        index ([type], optional): [description]. Defaults to None.
+
+    Returns:
+        [type]: [description]
+    df = make_df_empty(['a', 'b'], dtypes=[np.int64, np.int64])    
+    """
+    assert len(columns)==len(dtypes)
+    df = pd.DataFrame(index=index)
+    for c,d in zip(columns, dtypes):
+        df[c] = pd.Series(dtype=d)
+    return df
+
 def make_column_transformer(num_missing_impute_strategy='mean'):
     """[create a data preprocess pipeline using sklearn pipeline]
     Todo
