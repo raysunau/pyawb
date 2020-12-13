@@ -25,10 +25,11 @@ model:
     hyperparameter_search:
         method: random_search
         scoring: ‘roc_auc’
+        random_state: 42
         parameter_grid:
             max_depth: [6, 10]
             n_estimators: [100, 300]
-            max_features: [auto, sqrt]
+            max_features: [None, sqrt]
         arguments:
             cv: 5
             refit: true

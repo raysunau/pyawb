@@ -18,6 +18,9 @@ from datk.preprocessing import encode,normalize,handle_missing_values
 from datk.data import models_dict, metrics_dict, evaluate_model
 from datk.hyperparams import hyperparameter_search
 
+import warnings
+warnings.filterwarnings("ignore")
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(
             format = '%(asctime)s:%(levelname)s:%(message)s',
