@@ -1,9 +1,11 @@
 
+#%%
 import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.abspath(''))))
 
+#%%
 from datk.model import ModelTrainer
 
 """ fit_params = {
@@ -22,4 +24,5 @@ fit_params = {
     'results_path': './examples/fit/'
 }
 
-ModelTrainer(**fit_params)
+#%%
+mymodel = ModelTrainer(**fit_params)
