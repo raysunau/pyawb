@@ -1,38 +1,52 @@
 {
-    "model": "XGBClassifier",
-    "arguments": {
-        "n_estimators": 100
-    },
+    "model": "RandomForestClassifier",
+    "arguments": "default",
     "type": "classification",
-    "algorithm": "XGBClassifier",
+    "algorithm": "RandomForest",
     "dataset_props": {
+        "type": "csv",
+        "split": {
+            "test_size": 0.2,
+            "shuffle": true
+        },
         "preprocess": {
+            "missing_values": "mean",
             "encoding": {
                 "type": "oneHotEncoding",
                 "column": "Sex"
             },
-            "missing_values": "mean",
             "scale": {
                 "method": "standard",
                 "target": "inputs"
             }
-        },
-        "split": {
-            "shuffle": true,
-            "test_size": 0.2,
-            "stratify": "default"
-        },
-        "type": "csv"
+        }
     },
     "model_props": {
-        "algorithm": "XGBClassifier",
         "type": "classification",
-        "cross_validate": {
-            "cv": 3,
-            "verbose": 1
-        },
-        "arguments": {
-            "n_estimators": 100
+        "algorithm": "RandomForest",
+        "hyperparameter_search": {
+            "method": "random_search",
+            "scoring": "‘roc_auc’",
+            "parameter_grid": {
+                "max_depth": [
+                    6,
+                    10
+                ],
+                "n_estimators": [
+                    100,
+                    300
+                ],
+                "max_features": [
+                    "auto",
+                    "sqrt"
+                ]
+            },
+            "arguments": {
+                "cv": 5,
+                "refit": true,
+                "return_train_score": false,
+                "verbose": 0
+            }
         }
     },
     "data_path": "./examples/train_titanic.csv",
@@ -52,31 +66,18 @@
         "Survived"
     ],
     "results_on_test_data": {
-        "accuracy_score": 0.8212290502793296,
-        "f1_score": 0.7611940298507462,
-        "precision_score": 0.7846153846153846,
-        "recall_score": 0.7391304347826086,
-        "roc_auc_score": 0.8491436100131752
+        "accuracy_score": 0.8491620111731844,
+        "f1_score": 0.7969924812030075,
+        "precision_score": 0.803030303030303,
+        "recall_score": 0.7910447761194029,
+        "roc_auc_score": 0.8941231343283583
     },
-    "cross_validation_params": {
-        "cv": 3,
-        "verbose": 1
-    },
-    "cross_validation_results": {
-        "fit_time": [
-            0.1478421688079834,
-            0.03892993927001953,
-            0.03241920471191406
-        ],
-        "score_time": [
-            0.002212047576904297,
-            0.0014791488647460938,
-            0.0014889240264892578
-        ],
-        "test_score": [
-            0.8109243697478992,
-            0.7805907172995781,
-            0.7763713080168776
-        ]
+    "hyperparameter_search_results": {
+        "best_params": {
+            "n_estimators": 300,
+            "max_features": "auto",
+            "max_depth": 10
+        },
+        "best_score": 0.8048261597557372
     }
 }

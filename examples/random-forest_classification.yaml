@@ -9,6 +9,7 @@ dataset:
         missing_values: mean    # other possible values: [drop, median, most_frequent, constant] check the docs for more
         encoding:
             type: oneHotEncoding  # other possible values: [labelEncoding]
+            column: Sex
         scale:  # scaling options
             method: standard    # standardization will scale values to have a 0 mean and 1 standard deviation  | you can also try minmax
             target: inputs  # scale inputs. | other possible values: [outputs, all] # if you choose all then all values in the dataset will be scaled
@@ -18,11 +19,22 @@ dataset:
 model:
     type: classification
     algorithm: RandomForest
-    arguments:
-        n_estimators: 100
-        max_depth: 30
-
+    # arguments:
+        # n_estimators: 100
+        # max_depth: 30
+    hyperparameter_search:
+        method: random_search
+        scoring: ‘roc_auc’
+        parameter_grid:
+            max_depth: [6, 10]
+            n_estimators: [100, 300]
+            max_features: [auto, sqrt]
+        arguments:
+            cv: 5
+            refit: true
+            return_train_score: false
+            verbose: 0
 
 # target you want to predict
 target:
-    - survived
+    - Survived

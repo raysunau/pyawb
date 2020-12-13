@@ -16,7 +16,7 @@ from datk.configs import configs
 from datk.utils import read_yaml,create_yaml,extract_params,read_json,_reshape
 from datk.preprocessing import encode,normalize,handle_missing_values
 from datk.data import models_dict, metrics_dict, evaluate_model
-
+from datk.hyperparams import hyperparameter_search
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -345,6 +345,7 @@ class ModelTrainer:
         cv_results = None
         eval_results = None
         cv_params = None
+        hp_search_results = {}
 
         if self.model_type == 'clustering':
             x_train = self._prepare_clustering_data()
@@ -370,6 +371,27 @@ class ModelTrainer:
                 cv_results = cross_validate(estimator=self.model,
                                             X=x_train,
                                             y=y_train, **cv_params)
+            
+            hyperparams_props = self.model_props.get('hyperparameter_search', None)
+            if hyperparams_props:
+
+                # perform hyperparameter search
+                method = hyperparams_props.get('method', None)
+                grid_params = hyperparams_props.get('parameter_grid', None)
+                hp_args = hyperparams_props.get('arguments', None)
+                logger.info(f"Performing hyperparameter search using -> {method}")
+                logger.info(f"Grid parameters entered by the user: {grid_params}")
+                logger.info(f"Additional hyperparameter arguments: {hp_args}")
+                best_estimator, best_score, best_params = hyperparameter_search(model=self.model,
+                                                                                method=method,
+                                                                                params=grid_params,
+                                                                                x_train=x_train,
+                                                                                y_train=y_train,
+                                                                                **hp_args)
+                hp_search_results['best_params'] = best_params
+                hp_search_results['best_score'] = best_score
+                self.model = best_estimator
+
             self.model.fit(x_train, y_train)
 
         else:   # if the model type is clustering
@@ -413,7 +435,8 @@ class ModelTrainer:
             "results_path": str(self.results_path),
             "model_path": str(self.default_model_path),
             "target": None if self.model_type == 'clustering' else self.target,
-            "results_on_test_data": eval_results
+            "results_on_test_data": eval_results,
+            "hyperparameter_search_results": hp_search_results
 
         }
         if self.model_type == 'clustering':
