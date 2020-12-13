@@ -38,7 +38,7 @@
                     300
                 ],
                 "max_features": [
-                    "None",
+                    8,
                     "sqrt"
                 ]
             },
@@ -67,18 +67,18 @@
         "Survived"
     ],
     "results_on_test_data": {
-        "accuracy_score": 0.7877094972067039,
-        "f1_score": 0.7076923076923077,
-        "precision_score": 0.7076923076923077,
-        "recall_score": 0.7076923076923077,
-        "roc_auc_score": 0.8406882591093118
+        "accuracy_score": 0.7932960893854749,
+        "f1_score": 0.7131782945736433,
+        "precision_score": 0.7796610169491526,
+        "recall_score": 0.6571428571428571,
+        "roc_auc_score": 0.8099606815203144
     },
     "hyperparameter_search_results": {
         "best_params": {
             "n_estimators": 300,
             "max_features": "sqrt",
-            "max_depth": 6
+            "max_depth": 10
         },
-        "best_score": 0.8286614793657048
+        "best_score": 0.8384713877671626
     }
 }

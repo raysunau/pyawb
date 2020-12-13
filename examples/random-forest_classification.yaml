@@ -29,7 +29,7 @@ model:
         parameter_grid:
             max_depth: [6, 10]
             n_estimators: [100, 300]
-            max_features: [None, sqrt]
+            max_features: [8, sqrt]
         arguments:
             cv: 5
             refit: true
