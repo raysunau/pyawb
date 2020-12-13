@@ -50,7 +50,7 @@
             }
         }
     },
-    "data_path": "./examples/train_titanic.csv",
+    "data_path": "/Users/rsun/projects/code/pydatoolkit/examples/train_titanic.csv",
     "train_data_shape": [
         712,
         12
@@ -61,24 +61,24 @@
     ],
     "train_data_size": 712,
     "test_data_size": 179,
-    "results_path": "./examples/fit/",
-    "model_path": "./examples/fit/model.sav",
+    "results_path": "/Users/rsun/projects/code/pydatoolkit/examples/fit/",
+    "model_path": "/Users/rsun/projects/code/pydatoolkit/examples/fit/model.sav",
     "target": [
         "Survived"
     ],
     "results_on_test_data": {
-        "accuracy_score": 0.7932960893854749,
-        "f1_score": 0.7131782945736433,
-        "precision_score": 0.7796610169491526,
-        "recall_score": 0.6571428571428571,
-        "roc_auc_score": 0.8099606815203144
+        "accuracy_score": 0.7653631284916201,
+        "f1_score": 0.6769230769230768,
+        "precision_score": 0.8148148148148148,
+        "recall_score": 0.5789473684210527,
+        "roc_auc_score": 0.8661216147164026
     },
     "hyperparameter_search_results": {
         "best_params": {
             "n_estimators": 300,
             "max_features": "sqrt",
-            "max_depth": 10
+            "max_depth": 6
         },
-        "best_score": 0.8384713877671626
+        "best_score": 0.8414163301487244
     }
 }

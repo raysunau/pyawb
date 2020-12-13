@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 requirements = [
-    'pandas==1.1.1',
+    'pandas==1.1.4',
     'PyYAML==5.3.1',
     'scikit-learn==0.23.2'
 ]
