@@ -16,6 +16,7 @@ setup(
     version='0.1.0',
     description='Python Data Analytics library',
     author='RaySun',
+    author_email="raysun@example.com",
     license='MIT',
     install_requires=requirements,
     setup_requires=setup_requirements,
