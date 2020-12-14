@@ -53,6 +53,7 @@ class ModelTrainer:
         self.logfile = kwargs.get('logfile',None)
         self.command = kwargs.get('cmd',None)
         self.results_path = kwargs.get('results_path',None) # path to the results folder
+        self._x_columns = None
         # results_path as specified input
         if self.results_path==None:
             self.results_path = ModelTrainer.results_path  # path to the results folder
@@ -270,11 +271,15 @@ class ModelTrainer:
 
             if any(col not in attributes for col in self.target):
                 raise Exception("chosen target(s) to predict must exist in the dataset")
+            
+            
 
             y = pd.concat([dataset.pop(x) for x in self.target], axis=1) # remove target variable(s) from dataset & concat them
             x = _reshape(dataset.to_numpy())
             y = _reshape(y.to_numpy())
             logger.info(f"y shape: {y.shape} and x shape: {x.shape}")
+            self._x_columns = dataset.columns.to_list()
+            logger.info(f"X columns: {self._x_columns}")
 
             # handle data scaling
             if preprocess_props:

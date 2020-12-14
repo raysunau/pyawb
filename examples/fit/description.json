@@ -67,18 +67,18 @@
         "Survived"
     ],
     "results_on_test_data": {
-        "accuracy_score": 0.7653631284916201,
-        "f1_score": 0.6769230769230768,
-        "precision_score": 0.8148148148148148,
-        "recall_score": 0.5789473684210527,
-        "roc_auc_score": 0.8661216147164026
+        "accuracy_score": 0.7988826815642458,
+        "f1_score": 0.7352941176470588,
+        "precision_score": 0.8620689655172413,
+        "recall_score": 0.6410256410256411,
+        "roc_auc_score": 0.8519928915968522
     },
     "hyperparameter_search_results": {
         "best_params": {
-            "n_estimators": 300,
+            "n_estimators": 100,
             "max_features": "sqrt",
             "max_depth": 6
         },
-        "best_score": 0.8414163301487244
+        "best_score": 0.8314192849404117
     }
 }
