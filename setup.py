@@ -14,7 +14,7 @@ setup(
     name='datk',
     packages=find_packages(include=['datk', 'datk.*']),
     version='0.1.0',
-    description='Python Data Analytics library',
+    description='Python Data/Modelling Analytics library',
     author='RaySun',
     author_email="raysun@example.com",
     license='MIT',
