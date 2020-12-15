@@ -1,6 +1,6 @@
 import yaml
 import json
-
+import re
 
 def create_yaml(data, f):
     try:
@@ -51,3 +51,12 @@ def _reshape(arr):
     if len(arr.shape) <= 1:
         arr = arr.reshape(-1, 1)
     return arr
+
+# Switch column names to lower_case_with_underscores
+# df_raw.columns = df_raw.columns.map(standardize_name)
+def standardize_name(cname):
+
+    cname = re.sub(r'[-\.]', ' ', cname)
+    cname = cname.strip().lower()
+    cname = re.sub(r'\s+=', '_', cname)
+    return cname

@@ -75,6 +75,12 @@ def normalize(x, y=None, method='standard'):
         return scaler.fit_transform(X=x, y=y)
 
 # sunr's function
+# Switch column names to lower_case_with_underscores
+# df_raw.columns = df_raw.columns.map(standardize_name)
+def fix_column_names(df):
+    df.columns = df.columns.str.strip().str.lower().str.replace('[#,@,&,=]()', '_')
+    return df
+
 def make_df_empty(columns, dtypes, index=None):
     """[create an empty dataframe with columns and dtypes]
 
