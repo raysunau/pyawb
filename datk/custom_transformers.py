@@ -1,6 +1,7 @@
 # Reference
 # http://zacstewart.com/2014/08/05/pipelines-of-featureunions-of-pipelines.html
 # https://github.com/jem1031/pandas-pipelines-custom-transformers
+# Preprocess pipeline for pandas
 
 import numpy as np
 import pandas as pd
