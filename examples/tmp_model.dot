@@ -1,0 +1,35 @@
+digraph {
+    graph [ rankdir=TB ]
+
+    0 [ label="Sex_male<0.5" fillcolor="#78bceb" shape="box" style="filled,rounded" ]
+    0 -> 1 [label="yes, missing" color="#0000FF"]
+    0 -> 2 [label="no" color="#FF0000"]
+
+    1 [ label="Pclass<2.5" fillcolor="#78bceb" shape="box" style="filled,rounded" ]
+    1 -> 3 [label="yes, missing" color="#0000FF"]
+    1 -> 4 [label="no" color="#FF0000"]
+
+    3 [ label="leaf= 53.71%" fillcolor="#e48038" shape="box" style="filled" ]
+
+    4 [ label="SibSp<0.5" fillcolor="#78bceb" shape="box" style="filled,rounded" ]
+    4 -> 7 [label="yes, missing" color="#0000FF"]
+    4 -> 8 [label="no" color="#FF0000"]
+
+    7 [ label="leaf= 50.73%" fillcolor="#e48038" shape="box" style="filled" ]
+
+    8 [ label="leaf= 48.71%" fillcolor="#e48038" shape="box" style="filled" ]
+
+    2 [ label="Pclass<1.5" fillcolor="#78bceb" shape="box" style="filled,rounded" ]
+    2 -> 5 [label="yes, missing" color="#0000FF"]
+    2 -> 6 [label="no" color="#FF0000"]
+
+    5 [ label="leaf= 48.80%" fillcolor="#e48038" shape="box" style="filled" ]
+
+    6 [ label="Embarked_C<0.5" fillcolor="#78bceb" shape="box" style="filled,rounded" ]
+    6 -> 9 [label="yes, missing" color="#0000FF"]
+    6 -> 10 [label="no" color="#FF0000"]
+
+    9 [ label="leaf= 46.81%" fillcolor="#e48038" shape="box" style="filled" ]
+
+    10 [ label="leaf= 48.41%" fillcolor="#e48038" shape="box" style="filled" ]
+}
